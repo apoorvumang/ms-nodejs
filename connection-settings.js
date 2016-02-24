@@ -9,7 +9,7 @@ module.exports.connection = mysql.createConnection({
   port     : '3306',
   user     : 'adminSgjdugT',
   password : 'jYr9aHsfDyik',
-  database : 'nodejs'
+  database : 'drmahima_com'
 });
 
 // module.exports.connection = mysql.createConnection({
