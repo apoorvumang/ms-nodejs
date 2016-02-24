@@ -31,3 +31,5 @@ node_modules
 ms-new.iml
 
 .DS_Store
+
+connection-settings.js
