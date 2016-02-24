@@ -6,9 +6,9 @@ var mysql = require('mysql');
 
 module.exports.connection = mysql.createConnection({
   host     : 'localhost',
-  user     : 'root',
-  password : 'pass',
-  database : 'drmahima_com'
+  user     : 'adminSgjdugT',
+  password : 'jYr9aHsfDyik',
+  database : 'nodejs'
 });
 
 // module.exports.connection = mysql.createConnection({
