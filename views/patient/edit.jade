@@ -1,0 +1,13 @@
+div#patient-show(ng-hide="editPatient")
+    .row
+        .col-sm-12
+            h3
+                | {{patient.name}}
+                button.btn.btn-default.btn-heading(ng-click="editPatient=true") Edit patient
+    .row
+        .col-sm-12
+            display-patient
+div#patient-edit(ng-show="editPatient")
+    .row
+        .col-sm-12
+            edit-patient
