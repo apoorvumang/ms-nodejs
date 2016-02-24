@@ -60,6 +60,9 @@ angular.module('myApp.controllers', []).
                 $scope.patient2 = {};
             });
     }]).
+    controller('SearchAppointmentCtrl',['$scope', function($scope) {
+        $scope.message='Appointment';
+    }]).
     controller('SearchPatientCtrl', ['$scope', '$http', function($scope, $http) {
         $scope.patient = {};
         $scope.patientList = [];
