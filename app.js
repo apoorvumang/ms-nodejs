@@ -51,6 +51,7 @@ app.get('/api/patient/idrange/:startID/:endID', api.getPatientRange);
 app.get('/api/patient/siblings/:id', api.getSiblings);
 app.get('/api/patientAndSiblings/:id', api.getPatientAndSiblings);
 app.get('/api/schedule/:id', api.getSchedule);
+app.get('/api/appointments/:date', api.getAppointments);
 app.post('/api/patient/sms', api.postSMS);
 
 

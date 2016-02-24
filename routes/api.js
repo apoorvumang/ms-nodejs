@@ -123,6 +123,20 @@ exports.getSchedule = function(req, res) {
     });
 }
 
+exports.getAppointments = function(req, res) {
+     mysql.connection.query('SELECT v.name as vname, vs.date, p.name, p.phone, p.phone2 from vac_schedule vs, vaccines v, patients p WHERE ' + 
+                            'vs.p_id = p.id AND vs.v_id = v.id AND vs.date = \''+ req.params.date +'\' AND vs.given = \'N\' ORDER BY vs.date LIMIT 100', function (err, rows, fields) {
+        if (err) {
+            console.log(err);
+            res.json([]);
+        }
+        else {
+            console.log('Got appointments from date, number of rows: ', rows.length);
+            res.json(rows);
+        }
+    });
+}
+
 exports.postSMS = function (req, res) {
     console.log(req.body);
     res.json({numSent: req.body.smsList.length});
