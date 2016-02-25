@@ -30,3 +30,15 @@ div.search-div
 						td {{appointment.phone}}
 						td {{appointment.phone2}}
 						td {{appointment.date | printableDate}}
+		.row
+			.col-sm-6
+				form(role="form")
+					.form-group
+						label(for="smsMessage").control-label SMS Message
+						textarea#smsMessage(ng-model="smsMessage", placeholder="SMS", rows="4").form-control
+					button(ng-click="sendSMS(smsMessage)", type="submit", ng-disabled="!(appointmentList.length > 0)").btn.btn-default Send SMS
+					button(ng-click="resetSMSMessage()", style="margin-left:10px").btn.btn-default Reset to default
+			.col-sm-6
+				label {{getSelectedLength()}} appointments selected
+				.alert.alert-success(ng-show = "smsSuccess") Successfully sent {{numSMSSuccess}} messages!
+				.alert.alert-danger(ng-show = "smsFailed") Failed to send messages!

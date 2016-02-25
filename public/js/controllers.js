@@ -65,6 +65,12 @@ angular.module('myApp.controllers', []).
         $scope.appDate = new Date();
         $scope.orderByField = 'id';
         $scope.reverseSort = false;
+        $scope.defaultSMSMessage = "Dear %name%,\nYou have %vaccines% vaccinations due on %date%\nDr. Mahima\n981129950";
+        $scope.smsMessage = $scope.defaultSMSMessage;
+        $scope.smsSuccess = false;
+        $scope.numSMSSuccess = 0;
+        $scope.smsFailed = false;
+
         $scope.changeOrdering = function (field) {
             $scope.orderByField = field.name;
             $scope.reverseSort = !$scope.reverseSort;
@@ -86,6 +92,37 @@ angular.module('myApp.controllers', []).
             for (var i = 0; i < $scope.appointmentList.length; i++) {
                 $scope.appointmentList[i].sms = false;
             }
+        };
+
+        $scope.sendSMS = function (smsMessage) {
+            var smsList = [];
+            for (var i = 0; i < $scope.appointmentList.length; i++) {
+                if ($scope.appointmentList[i].sms === true)
+                    smsList.push({id: $scope.appointmentList[i].id, phone: $scope.appointmentList[i].phone});
+            }
+            $http.post('/api/patient/sms', {message: smsMessage, smsList: smsList}).
+                success(function (data, status, headers, config) {
+                    $scope.smsSuccess = true;
+                    $scope.smsFailed = false;
+                    $scope.numSMSSuccess = data.numSent;
+                }).
+                error(function (data, status, headers, config) {
+                    $scope.smsSuccess = false;
+                    $scope.smsFailed = true;
+                });
+        };
+
+        $scope.getSelectedLength = function () {
+            var numSelected = 0;
+            for (var i = 0; i < $scope.appointmentList.length; i++) {
+                if ($scope.appointmentList[i].sms === true)
+                    numSelected++;
+            }
+            return numSelected;
+        };
+
+        $scope.resetSMSMessage = function () {
+            $scope.smsMessage = $scope.defaultSMSMessage;
         };
 
 
