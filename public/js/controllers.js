@@ -63,11 +63,45 @@ angular.module('myApp.controllers', []).
     controller('SearchAppointmentCtrl', ['$scope', '$http', function($scope, $http) {
         $scope.appointmentList = [];
         $scope.appDate = new Date();
+        $scope.orderByField = 'id';
+        $scope.reverseSort = false;
+        $scope.changeOrdering = function (field) {
+            $scope.orderByField = field.name;
+            $scope.reverseSort = !$scope.reverseSort;
+        };
+        var processData = function (aList) {
+            for (var i = 0; i < aList.length; i++) {
+                aList[i].sms = false;
+            }
+            return aList;
+        };
+
+        $scope.toggleAllSMS = function () {
+            for (var i = 0; i < $scope.appointmentList.length; i++) {
+                $scope.appointmentList[i].sms = !$scope.appointmentList[i].sms;
+            }
+        };
+
+        $scope.deselectAllSMS = function () {
+            for (var i = 0; i < $scope.appointmentList.length; i++) {
+                $scope.appointmentList[i].sms = false;
+            }
+        };
+
+
+        $scope.fieldList = [
+            {name: "id", displayName: "ID"},
+            {name: "name", displayName: "Name"},
+            {name: "vaccines", displayName: "Vaccines"},
+            {name: "phone", displayName: "Phone"},
+            {name: "phone2", displayName: "Phone 2"},
+            {name: "date", displayName: "Date"}
+        ];
         $scope.searchByDate = function (appDate) {
              $http({method: 'GET', url: '/api/appointments/' + appDate}).
                 success(function (data, status, headers, config) {
                     if (!isEmpty(data))
-                        $scope.appointmentList = data;
+                        $scope.appointmentList = processData(data);
                 }).
                 error(function (data, status, headers, config) {
                     $scope.appointmentList = [];
