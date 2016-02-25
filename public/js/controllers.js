@@ -60,8 +60,19 @@ angular.module('myApp.controllers', []).
                 $scope.patient2 = {};
             });
     }]).
-    controller('SearchAppointmentCtrl',['$scope', function($scope) {
-        $scope.message='Appointment';
+    controller('SearchAppointmentCtrl', ['$scope', '$http', function($scope, $http) {
+        $scope.appointmentList = [];
+        $scope.appDate = new Date();
+        $scope.searchByDate = function (appDate) {
+             $http({method: 'GET', url: '/api/appointments/' + appDate}).
+                success(function (data, status, headers, config) {
+                    if (!isEmpty(data))
+                        $scope.appointmentList = data;
+                }).
+                error(function (data, status, headers, config) {
+                    $scope.appointmentList = [];
+                });
+        }
     }]).
     controller('SearchPatientCtrl', ['$scope', '$http', function($scope, $http) {
         $scope.patient = {};

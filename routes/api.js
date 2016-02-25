@@ -3,6 +3,16 @@
  */
 var mysql = require('../connection-settings.js');
 
+function twoDigits(d) {
+    if(0 <= d && d < 10) return "0" + d.toString();
+    if(-10 < d && d < 0) return "-0" + (-1*d).toString();
+    return d.toString();
+}
+
+Date.prototype.toMysqlFormat = function() {
+    return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate());
+};
+
 exports.name = function (req, res) {
     mysql.connection.query('SELECT * FROM doctors', function (err, rows, fields) {
         if (err) throw err;
@@ -124,8 +134,8 @@ exports.getSchedule = function(req, res) {
 }
 
 exports.getAppointments = function(req, res) {
-     mysql.connection.query('SELECT v.name as vname, vs.date, p.name, p.phone, p.phone2 from vac_schedule vs, vaccines v, patients p WHERE ' + 
-                            'vs.p_id = p.id AND vs.v_id = v.id AND vs.date = \''+ req.params.date +'\' AND vs.given = \'N\' ORDER BY vs.date LIMIT 100', function (err, rows, fields) {
+    var date = new Date(req.params.date);
+    mysql.connection.query("SELECT p.id, p.name, p.phone, p.phone2, group_concat(v.name separator ', ') as vaccines, vs.date from vac_schedule vs, vaccines v, patients p WHERE vs.p_id = p.id AND vs.v_id = v.id AND vs.date = '" + date.toMysqlFormat() + "' AND vs.given = 'N' group by p.id ORDER BY p.id LIMIT 100", function (err, rows, fields) {
         if (err) {
             console.log(err);
             res.json([]);

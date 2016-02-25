@@ -1,3 +1,14 @@
-.row
-    .col-lg-12
-        p This is the partial for {{message}}
+div.search-div
+	h4 Search Appointments
+	.row
+		.col-sm-12
+			form(role="form").form-horizontal
+				.form-group
+					label(for="appointmentDate").col-sm-2.control-label Date:
+					.col-sm-6
+						input#appointmentDate.form-control(ng-model="appDate", type="date")
+					.col-sm-2
+						button(ng-click="searchByDate(appDate)", type="submit").btn.btn-default.btn-block Go
+	div#results(ng-show="appointmentList.length > 0")
+		pre
+			{{appointmentList | prettyJson}}
